@@ -1,5 +1,4 @@
 let movies;
-
 export default class MoviesDAO {
   static async injectDB(conn) {
     if (movies) {
@@ -30,6 +29,7 @@ export default class MoviesDAO {
     try {
       cursor = await movies
         .find(query)
+
         .limit(moviesPerPage)
         .skip(moviesPerPage * page);
       const moviesList = await cursor.toArray();
