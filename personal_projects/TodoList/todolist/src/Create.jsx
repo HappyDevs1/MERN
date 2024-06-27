@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 function Create() {
@@ -11,7 +11,7 @@ function Create() {
   return (
     <div>
       <input type='text' name='' id='' className='create-form' onChange={(e) => {setTask(e.target.value)}}/>
-      <button type='button' className='form-btn' onClick={handleClick()}>Add</button>
+      <button type='button' className='form-btn' onClick={handleAdd}>Add</button>
     </div>
   )
 }
