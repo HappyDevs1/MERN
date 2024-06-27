@@ -1,10 +1,17 @@
 import React from 'react';
+import axios from 'axios';
 
 function Create() {
+  const [task, setTask] = useState();
+  const handleAdd = () => {
+  axios.post('https://localhost:3001/add', {task: task})
+  .then(result => console.log(result))
+  .catch(err => console.log(err))
+  }
   return (
     <div>
-      <input type='text' name='' id='' className='create-form' />
-      <button type='button' className='form-btn'>Add</button>
+      <input type='text' name='' id='' className='create-form' onChange={(e) => {setTask(e.target.value)}}/>
+      <button type='button' className='form-btn' onClick={handleClick()}>Add</button>
     </div>
   )
 }
