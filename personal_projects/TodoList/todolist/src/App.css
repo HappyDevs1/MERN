@@ -3,13 +3,13 @@
   flex-direction: column;
   align-items: center;
 }
-.create_form input {
+.create-form {
   width: 300px;
   padding: 10px;
   border-bottom: 2px solid;
   outline: none;
 }
-.create_form button {
+.form-btn {
   padding: 10px;
   background-color: black;
   color: white;

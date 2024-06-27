@@ -3,8 +3,8 @@ import React from 'react';
 function Create() {
   return (
     <div>
-      <input type='text' name='' id='' />
-      <button type='button'>Add</button>
+      <input type='text' name='' id='' className='create-form' />
+      <button type='button' className='form-btn'>Add</button>
     </div>
   )
 }
