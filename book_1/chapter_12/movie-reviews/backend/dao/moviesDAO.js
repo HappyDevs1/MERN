@@ -1,8 +1,6 @@
-import mongodb from "mongodb" ;
-const ObjectId = mongodb.ObjectID;
-
+import mongodb from "mongodb";
+const ObjectId = mongodb.ObjectId;
 let movies;
-
 export default class MoviesDAO {
   static async injectDB(conn) {
     if (movies) {
@@ -44,7 +42,6 @@ export default class MoviesDAO {
       return { moviesList: [], totalNumMovies: 0 };
     }
   }
-
   static async getRatings() {
     let ratings = [];
     try {
@@ -53,6 +50,30 @@ export default class MoviesDAO {
     } catch (e) {
       console.error(`unable to get ratings, $(e)`);
       return ratings;
+    }
+  }
+  static async getMovieById(id) {
+    try {
+      return await movies
+        .aggregate([
+          {
+            $match: {
+              _id: new ObjectId(id),
+            },
+          },
+          {
+            $lookup: {
+              from: "reviews",
+              localField: "_id",
+              foreignField: "movie_id",
+              as: "reviews",
+            },
+          },
+        ])
+        .next();
+    } catch (e) {
+      console.error(`something went wrong in getMovieById: ${e}`);
+      throw e;
     }
   }
 }
