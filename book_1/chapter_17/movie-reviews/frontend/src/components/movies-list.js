@@ -42,6 +42,53 @@ const MoviesList = (props) => {
     const searchRating = e.target.value;
     setSearchRating(searchRating);
   };
-};
+
+  return (
+    <div className="App">
+      <Container>
+        <Form>
+          <Row>
+            <Col>
+              <Form.Group>
+                <Form.Control
+                  type="text"
+                  placeholder="Search by title"
+                  value={searchTitle}
+                  onChange={onChangeSearchTitle}
+                />
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="button"
+                onClick={findByTitle}
+              >
+                Search
+              </Button>
+            </Col>
+            <Col>
+              <Form.Group>
+                <Form.Control
+                  as="select" onChange={onChangeSearchRating} >
+                  {ratings.map(rating => {
+                    return (
+                      <option value={rating}>{rating}</option>
+                    )
+                  })}
+                </Form.Control>
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="button"
+                onClick={findByRating}
+              >
+                Search
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </Container>
+    </div>
+  );
+}
 
 export default MoviesList;
