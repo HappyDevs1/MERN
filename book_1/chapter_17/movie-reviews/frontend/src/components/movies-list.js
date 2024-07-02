@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import MovieDataService from "../services/movies";
 import { Link } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Container from "react-bootstrap/Container";
+import Card from "react-bootstrap/Card";
 
 const MoviesList = (props) => {
   const [movies, setMovies] = useState([]);
@@ -57,38 +63,45 @@ const MoviesList = (props) => {
                   onChange={onChangeSearchTitle}
                 />
               </Form.Group>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={findByTitle}
-              >
+              <Button variant="primary" type="button" onClick={findByTitle}>
                 Search
               </Button>
             </Col>
             <Col>
               <Form.Group>
-                <Form.Control
-                  as="select" onChange={onChangeSearchRating} >
-                  {ratings.map(rating => {
-                    return (
-                      <option value={rating}>{rating}</option>
-                    )
+                <Form.Control as="select" onChange={onChangeSearchRating}>
+                  {ratings.map((rating) => {
+                    return <option value={rating}>{rating}</option>;
                   })}
                 </Form.Control>
               </Form.Group>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={findByRating}
-              >
+              <Button variant="primary" type="button" onClick={findByRating}>
                 Search
               </Button>
             </Col>
           </Row>
         </Form>
+        <Row>
+          {movies.map((movie) => {
+            return (
+              <Col>
+                Beginning MERN Stack 104
+                <Card style={{ width: "18rem" }}>
+                  <Card.Img src={movie.poster + "/100px180"} />
+                  <Card.Body>
+                    <Card.Title>{movie.title}</Card.Title>
+                    <Card.Text>Rating: {movie.rated}</Card.Text>
+                    <Card.Text>{movie.plot}</Card.Text>
+                    <Link to={"/movies/" + movie._id}>View Reviews</Link>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
       </Container>
     </div>
   );
-}
+};
 
 export default MoviesList;
