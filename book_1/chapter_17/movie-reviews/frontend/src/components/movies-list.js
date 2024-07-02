@@ -33,6 +33,15 @@ const MoviesList = (props) => {
         console.log(e);
       });
   };
+
+  const onChangeSearchTitle = (e) => {
+    const searchTitle = e.target.value;
+    setSearchTitle(searchTitle);
+  };
+  const onChangeSearchRating = (e) => {
+    const searchRating = e.target.value;
+    setSearchRating(searchRating);
+  };
 };
 
 export default MoviesList;
