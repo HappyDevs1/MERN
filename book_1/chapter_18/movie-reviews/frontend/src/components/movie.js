@@ -21,6 +21,31 @@ const Movie = (props) => {
   useEffect(() => {
     getMovie(props.match.params.id);
   }, [props.match.params.id]);
-  return <div></div>;
+  return (
+    <div>
+      <Container>
+        <Row>
+          <Col>
+            <Image src={movie.poster + "/100px250"} fluid />
+          </Col>
+          <Col>
+            <Card>
+              <Card.Header as="h5">{movie.title}</Card.Header>
+              <Card.Body>
+                <Card.Text>{movie.plot}</Card.Text>
+                {props.user && (
+                  <Link to={"/movies/" + props.match.params.id + "/review"}>
+                    Add Review
+                  </Link>
+                )}
+              </Card.Body>
+            </Card>
+            <br></br>
+            <h2>Reviews</h2>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
 };
 export default Movie;
