@@ -27,9 +27,8 @@ const MoviesList = (props) => {
   }, [currentPage]);
 
   const retrieveMovies = () => {
-    MovieDataService.getAll()
+    MovieDataService.getAll(currentPage)
       .then((response) => {
-        console.log(response.data);
         setMovies(response.data.movies);
         setCurrentPage(response.data.page);
         setEntriesPerPage(response.data.entries_per_page);
@@ -38,6 +37,7 @@ const MoviesList = (props) => {
         console.log(e);
       });
   };
+
   const retrieveRatings = () => {
     MovieDataService.getRatings()
       .then((response) => {
