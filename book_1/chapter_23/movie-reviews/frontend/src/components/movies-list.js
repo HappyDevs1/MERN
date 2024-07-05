@@ -129,6 +129,16 @@ const MoviesList = (props) => {
             );
           })}
         </Row>
+        <br />
+        Showing page: {currentPage}.
+        <Button
+          variant="link"
+          onClick={() => {
+            setCurrentPage(currentPage + 1);
+          }}
+        >
+          Get next {entriesPerPage} results
+        </Button>
       </Container>
     </div>
   );
