@@ -30,13 +30,13 @@ app.post(("/books", async (request, response) => {
       publishYear: request.body.publishYear
     };
 
-    const book = await book.create(newbook);
+    const book = await Book.create(newbook);
 
     return response.status(201).send(book);
 
   } catch (error) {
     console.log(error.message);
-    response.status(500).send.json({ message: error.message });
+    response.status(500).json({ message: error.message });
   }
 }))
 

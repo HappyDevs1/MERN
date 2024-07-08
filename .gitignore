@@ -4,3 +4,4 @@ package-lock.json
 npm-debug.log
 .prettierrc.js
 .env
+config.js
