@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
 
 const app = express();
-
 app.use(express.json());
 
 app.get("/", (request, response) => {
@@ -12,7 +11,7 @@ app.get("/", (request, response) => {
   return response.status(234).send("Welcome to MERN Stack Tutorial")
 });
 
-app.post(("/books", async (request, response) => {
+app.post("/books", async (request, response) => {
   try {
     if (
       !request.body.title ||
@@ -20,25 +19,23 @@ app.post(("/books", async (request, response) => {
       !request.body.publishYear
     ) {
       return response.status(400).send({
-        message: "Send all required fields: title, author, publishYear"
-      })
+        message: 'Send all required fields: title, author, publishYear',
+      });
     }
-
     const newBook = {
       title: request.body.title,
       author: request.body.author,
-      publishYear: request.body.publishYear
+      publishYear: request.body.publishYear,
     };
 
-    const book = await Book.create(newbook);
+    const book = await Book.create(newBook);
 
     return response.status(201).send(book);
-
   } catch (error) {
     console.log(error.message);
-    response.status(500).json({ message: error.message });
+    response.status(500).send({ message: error.message });
   }
-}))
+});
 
 mongoose
   .connect(mongoDBURL)
