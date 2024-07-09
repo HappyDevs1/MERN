@@ -1,8 +1,10 @@
-import express from "express";
-const router = express.Router();
-import { Book } from "../models/bookModel.js";
+import express from 'express';
+import { Book } from '../models/bookModel.js';
 
-router.post("/", async (request, response) => {
+const router = express.Router();
+
+// Route for Save a new Book
+router.post('/', async (request, response) => {
   try {
     if (
       !request.body.title ||
@@ -10,7 +12,7 @@ router.post("/", async (request, response) => {
       !request.body.publishYear
     ) {
       return response.status(400).send({
-        message: "Send all required fields: title, author, publishYear",
+        message: 'Send all required fields: title, author, publishYear',
       });
     }
     const newBook = {
@@ -28,9 +30,11 @@ router.post("/", async (request, response) => {
   }
 });
 
-router.get("/", async (request, response) => {
+// Route for Get All Books from database
+router.get('/', async (request, response) => {
   try {
     const books = await Book.find({});
+
     return response.status(200).json({
       count: books.length,
       data: books,
@@ -41,10 +45,13 @@ router.get("/", async (request, response) => {
   }
 });
 
-router.get("/:id", async (request, response) => {
+// Route for Get One Book from database by id
+router.get('/:id', async (request, response) => {
   try {
     const { id } = request.params;
+
     const book = await Book.findById(id);
+
     return response.status(200).json(book);
   } catch (error) {
     console.log(error.message);
@@ -52,7 +59,8 @@ router.get("/:id", async (request, response) => {
   }
 });
 
-router.put("/:id", async (request, response) => {
+// Route for Update a Book
+router.put('/:id', async (request, response) => {
   try {
     if (
       !request.body.title ||
@@ -60,33 +68,37 @@ router.put("/:id", async (request, response) => {
       !request.body.publishYear
     ) {
       return response.status(400).send({
-        message: "Send all required fields: title, author, publishYear",
+        message: 'Send all required fields: title, author, publishYear',
       });
     }
+
     const { id } = request.params;
+
     const result = await Book.findByIdAndUpdate(id, request.body);
 
     if (!result) {
-      return response.status(404).json({ message: "Book not found" });
+      return response.status(404).json({ message: 'Book not found' });
     }
 
-    return response.status(200).send({ message: "Book updated successfully" });
+    return response.status(200).send({ message: 'Book updated successfully' });
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
   }
 });
 
-router.delete("/:id", async (request, response) => {
+// Route for Delete a book
+router.delete('/:id', async (request, response) => {
   try {
     const { id } = request.params;
+
     const result = await Book.findByIdAndDelete(id);
 
     if (!result) {
-      return response.status(404).json({ message: "Book not found" });
+      return response.status(404).json({ message: 'Book not found' });
     }
 
-    return response.status(200).send({ message: "Book deleted successfully" });
+    return response.status(200).send({ message: 'Book deleted successfully' });
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
