@@ -21,6 +21,17 @@ app.use(
     date: String!
     }
 
+    type User {
+    _idL ID!
+    email: String!
+    password: String
+    }
+
+    input UserInput {
+    email:String
+    password!
+    }
+
     input EventInput {
     title: String!
     description: String!
@@ -34,6 +45,8 @@ app.use(
 
     type RootMutation {
     createEvent(eventInput: EventInput): Event
+    //resume code from here
+    createUser
     }
 
     schema {
