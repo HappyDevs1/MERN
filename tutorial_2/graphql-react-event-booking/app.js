@@ -5,7 +5,7 @@ const { buildSchema } = require('graphql')
 
 const app = express();
 
-const event = [];
+const events = [];
 
 app.use(bodyParser.json());
 
@@ -46,12 +46,13 @@ app.use('/graphql', graphqlHTTP({
     createEvent: (args) => {
       const event = {
         _id: Math.random().toString(),
-        title: args.title,
-        description: args.title,
-        price: +args.price,
-        date: new Date().toISOString
+        title: args.eventInput.title,
+        description: args.eventInput.description,
+        price: +args.eventInput.price,
+        date: args.eventInput.date
       }
-      events.push(event)
+      events.push(event);
+      return event;
     } 
   },
   graphiql: true
