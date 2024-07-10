@@ -1,16 +1,18 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql')
+const express = require("express");
+const bodyParser = require("body-parser");
+const { graphqlHTTP } = require("express-graphql");
+const { buildSchema } = require("graphql");
+const mongoose = require("mongoose");
+const Event = require("./models/event.js");
 
 const app = express();
 
-const events = [];
-
 app.use(bodyParser.json());
 
-app.use('/graphql', graphqlHTTP({
-  schema: buildSchema(`
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: buildSchema(`
     type Event {
     _id: ID!
     title: String
@@ -39,25 +41,42 @@ app.use('/graphql', graphqlHTTP({
     mutation: RootMutation
     }
     `),
-  rootValue: {
-    events: () => {
-      return events;
+    rootValue: {
+      events: () => {
+        return event;
+      },
+      createEvent: (args) => {
+        const event = new Event({
+          title: args.eventInput.title,
+          description: args.eventInput.description,
+          price: +args.eventInput.price,
+          date: new Date(args.eventInput.date),
+        });
+        return event
+          .save()
+          .then((result) => {
+            console.log(result);
+            return { ...result._doc };
+          })
+          .catch((error) => {
+            console.log(error);
+            throw error;
+          });
+      },
     },
-    createEvent: (args) => {
-      const event = {
-        _id: Math.random().toString(),
-        title: args.eventInput.title,
-        description: args.eventInput.description,
-        price: +args.eventInput.price,
-        date: args.eventInput.date
-      }
-      events.push(event);
-      return event;
-    } 
-  },
-  graphiql: true
-}))
+    graphiql: true,
+  })
+);
 
-app.listen(3000, () => {
-  console.log('App is listening on port 3000');
-});
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.spdfyze.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority&appName=Cluster0`
+  )
+  .then(() => {
+    app.listen(3000, () => {
+      console.log("App is listening on port 3000");
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
