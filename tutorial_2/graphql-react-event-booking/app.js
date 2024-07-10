@@ -3,7 +3,10 @@ const bodyParser = require("body-parser");
 const { graphqlHTTP } = require("express-graphql");
 const { buildSchema } = require("graphql");
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+
 const Event = require("./models/event.js");
+const User = require("./models/user.js");
 
 const app = express();
 
@@ -22,14 +25,14 @@ app.use(
     }
 
     type User {
-    _idL ID!
+    _id: ID!
     email: String!
     password: String
     }
 
     input UserInput {
-    email:String
-    password!
+    email: String!
+    password: String!
     }
 
     input EventInput {
@@ -45,8 +48,7 @@ app.use(
 
     type RootMutation {
     createEvent(eventInput: EventInput): Event
-    //resume code from here
-    createUser
+    createUser(userInput: UserInput) : User
     }
 
     schema {
@@ -57,14 +59,14 @@ app.use(
     rootValue: {
       events: () => {
         return Event.find()
-        .then((events) => {
-          return events.map(event => {
-            return { ...event._doc, _id: event.id };
+          .then((events) => {
+            return events.map((event) => {
+              return { ...event._doc, _id: event.id };
+            });
           })
-        })
-        .catch((error) => {
-          throw error
-        })
+          .catch((error) => {
+            throw error;
+          });
       },
       createEvent: (args) => {
         const event = new Event({
@@ -75,12 +77,29 @@ app.use(
         });
         return event
           .save()
-          .then(result => {
+          .then((result) => {
             console.log(result);
             return { ...result._doc, _id: result._doc._id.toString() };
           })
           .catch((error) => {
             console.log(error);
+            throw error;
+          });
+      },
+      createUser: (args) => {
+        return bcrypt
+          .hash(args.userInput.password, 12)
+          .then((hashedPassword) => {
+            const user = new User({
+              email: args.userInput.email,
+              password: hashedPassword,
+            });
+            return user.save();
+          })
+          .then(result => {
+            return { ...result._doc, _id: result.id }
+          })
+          .catch((error) => {
             throw error;
           });
       },

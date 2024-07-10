@@ -18,7 +18,7 @@ const eventSchema = new Schema({
     required: true
   },
   creator: {
-    type: Shchema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User'
   }
 })
