@@ -1,9 +1,3 @@
-.DS_Store
-node_modules/
+node_modules
 package-lock.json
-npm-debug.log
-.prettierrc.js
-.env
-config.js
-notes.txt
-nodemon.json
+tsconfig.json
